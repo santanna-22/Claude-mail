@@ -57,5 +57,9 @@ def _read_csv(path):
     """Detecta o delimitador e lê o CSV."""
     with open(path, "r", encoding="utf-8-sig") as f:
         sample = f.read(4096)
-    dialect = csv.Sniffer().sniff(sample, delimiters=",;\t|")
-    return pd.read_csv(path, sep=dialect.delimiter, encoding="utf-8-sig")
+    try:
+        dialect = csv.Sniffer().sniff(sample, delimiters=",;\t|")
+        sep = dialect.delimiter
+    except csv.Error:
+        sep = ","
+    return pd.read_csv(path, sep=sep, encoding="utf-8-sig")
