@@ -82,14 +82,43 @@ O CSV/Excel deve ter uma coluna `email` (obrigatória). As demais colunas ficam 
 |------|-------|---------|-------|
 | João | joao@ex.com | Tech Corp | Gerente |
 
+## Monitor de Gmail + Alerta WhatsApp
+
+Monitora seu Gmail e envia uma notificação no WhatsApp quando chega um e-mail de um remetente específico.
+
+### Configuração do CallMeBot (uma única vez)
+
+1. Adicione **+34 644 71 81 99** nos contatos do celular
+2. Envie `I allow callmebot to send me messages` para esse número no WhatsApp
+3. Anote o **API Key** recebido na resposta
+
+### Configurar no .env
+
+```
+WATCH_SENDER=remetente@exemplo.com
+WHATSAPP_PHONE=+5531999999999
+CALLMEBOT_APIKEY=123456
+CHECK_INTERVAL=60
+```
+
+### Rodar o monitor
+
+```bash
+python gmail_monitor.py
+```
+
+O script roda continuamente verificando a cada 60 segundos (configurável).
+
 ## Estrutura do projeto
 
 ```
 Claude-mail/
-├── bulk_send.py          # Script principal (CLI)
+├── bulk_send.py          # Envio massificado de e-mails (CLI)
+├── gmail_monitor.py      # Monitor Gmail + alerta WhatsApp
 ├── email_sender.py       # Módulo de envio SMTP
 ├── contacts_reader.py    # Leitor de CSV/Excel
 ├── template_engine.py    # Motor de templates Jinja2
+├── whatsapp_notifier.py  # Notificação via WhatsApp (CallMeBot)
 ├── requirements.txt      # Dependências Python
 ├── .env.example          # Exemplo de configuração
 ├── templates/
